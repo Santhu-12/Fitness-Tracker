@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Register from "./components/auth/register";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>Hello</h1>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<div>Hello!</div>} />
+
+        <Route path="/signup" element={<Register />} />
+
+        {/* 404 Not Found */}
+        <Route path="*" element={<div>404 Page Not Found</div>} />
+      </Routes>
+    </Router>
   );
 }
 
