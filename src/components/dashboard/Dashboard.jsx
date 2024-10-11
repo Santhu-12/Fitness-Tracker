@@ -1,3 +1,4 @@
+import WaterIntakeTracker from "../features/WaterIntakeTracker";
 import SideNavUser from "../side-nav/SideNavUser";
 
 function Dashboard() {
@@ -12,6 +13,7 @@ function Dashboard() {
           <main>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
               {/* <Main /> */}
+              <WaterIntakeTracker />
             </div>
           </main>
         </div>
