@@ -1,75 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { database } from "../../firebase/firebase";
+import { ref, onValue, set } from "firebase/database";
+import { useAuth } from "../../contexts/authContext";
 
 const WaterIntakeTracker = () => {
+  const { currentUser } = useAuth();
   const [waterIntake, setWaterIntake] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [waterIntakeData, setWaterIntakeData] = useState([
-    { date: "2024-01-01", amount: 1.0 }, // 1000 ml
-    { date: "2024-01-02", amount: 0.9 }, // 900 ml
-    { date: "2024-01-03", amount: 0.8 }, // 800 ml
-    { date: "2024-01-04", amount: 0.6 }, // 600 ml
-    { date: "2024-01-05", amount: 1.0 }, // 1000 ml
-    { date: "2024-01-06", amount: 0.7 }, // 700 ml
-    { date: "2024-01-07", amount: 0.5 }, // 500 ml
-    { date: "2024-02-01", amount: 1.2 }, // 1200 ml
-    { date: "2024-02-02", amount: 0.6 }, // 600 ml
-    { date: "2024-02-03", amount: 0.5 }, // 500 ml
-    { date: "2024-02-04", amount: 0.9 }, // 900 ml
-    { date: "2024-03-01", amount: 1.0 }, // 1000 ml
-    { date: "2024-03-02", amount: 0.8 }, // 800 ml
-    { date: "2024-03-03", amount: 0.7 }, // 700 ml
-    { date: "2024-03-04", amount: 0.5 }, // 500 ml
-    { date: "2024-04-01", amount: 0.5 }, // 500 ml
-    { date: "2024-04-02", amount: 1.1 }, // 1100 ml
-    { date: "2024-04-03", amount: 0.6 }, // 600 ml
-    { date: "2024-04-04", amount: 0.8 }, // 800 ml
-    { date: "2024-05-01", amount: 1.0 }, // 1000 ml
-    { date: "2024-05-02", amount: 0.9 }, // 900 ml
-    { date: "2024-05-03", amount: 1.0 }, // 1000 ml
-    { date: "2024-06-01", amount: 1.2 }, // 1200 ml
-    { date: "2024-06-02", amount: 1.0 }, // 1000 ml
-    { date: "2024-06-03", amount: 0.5 }, // 500 ml
-    { date: "2024-07-01", amount: 0.8 }, // 800 ml
-    { date: "2024-07-02", amount: 0.9 }, // 900 ml
-    { date: "2024-08-01", amount: 0.7 }, // 700 ml
-    { date: "2024-08-02", amount: 1.0 }, // 1000 ml
-    { date: "2024-09-01", amount: 0.8 }, // 800 ml
-    { date: "2024-09-02", amount: 0.7 }, // 700 ml
-  ]);
+  const [waterIntakeData, setWaterIntakeData] = useState([]);
+  const [view, setView] = useState("weekly");
+  const [chartData, setChartData] = useState({ categories: [], series: [] });
 
-  const [view, setView] = useState("weekly"); // 'weekly' or 'monthly'
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (waterIntake && selectedDate) {
-      setWaterIntakeData([
-        ...waterIntakeData,
-        {
-          date: selectedDate.toISOString().split("T")[0],
-          amount: Number(waterIntake).toFixed(1),
-        },
-      ]);
-      setWaterIntake("");
-    }
-  };
-
-  const getFilteredData = () => {
+  const generateChartData = (data) => {
     const today = new Date();
-    return waterIntakeData.filter((entry) => {
+    const filteredData = data.filter((entry) => {
       const entryDate = new Date(entry.date);
       return view === "weekly"
-        ? (today - entryDate) / (1000 * 60 * 60 * 24) <= 30 // Filter for the last 30 days for weekly view
-        : entryDate.getFullYear() === today.getFullYear(); // Filter for the current year for monthly view
+        ? (today - entryDate) / (1000 * 60 * 60 * 24) <= 30 // Last 30 days for weekly view
+        : entryDate.getFullYear() === today.getFullYear(); // Current year for monthly view
     });
-  };
 
-  const generateChartData = () => {
-    const filteredData = getFilteredData();
     const groupedData = {};
-
     filteredData.forEach((entry) => {
       const dateStr =
         view === "weekly"
@@ -83,21 +37,66 @@ const WaterIntakeTracker = () => {
       groupedData[dateStr] = (groupedData[dateStr] || 0) + entry.amount;
     });
 
-    const labels = Object.keys(groupedData);
-    const data = Object.values(groupedData);
+    const categories = Object.keys(groupedData);
+    const series = [
+      {
+        name: "Water Intake (L)",
+        data: categories.map((cat) => groupedData[cat] || 0),
+      },
+    ];
 
-    return {
-      categories: labels.length > 0 ? labels : ["No Data"],
-      series: [
-        {
-          name: "Water Intake (L)",
-          data: data.length > 0 ? data : [0],
-        },
-      ],
-    };
+    return { categories, series };
   };
 
-  const chartData = generateChartData();
+  useEffect(() => {
+    if (currentUser) {
+      const userWaterIntakeRef = ref(
+        database,
+        `waterIntake/${currentUser.uid}`
+      );
+      onValue(userWaterIntakeRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const formattedData = Object.entries(data).map(([date, amount]) => ({
+            date,
+            amount,
+          }));
+          setWaterIntakeData(formattedData);
+          const newChartData = generateChartData(formattedData);
+          setChartData(newChartData);
+        } else {
+          setWaterIntakeData([]);
+          setChartData({ categories: [], series: [] });
+        }
+      });
+    }
+  }, [currentUser]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (waterIntake && selectedDate && currentUser) {
+      const dateKey = selectedDate.toISOString().split("T")[0];
+      const userWaterIntakeRef = ref(
+        database,
+        `waterIntake/${currentUser.uid}/${dateKey}`
+      );
+      set(userWaterIntakeRef, Number(waterIntake)).then(() => {
+        setWaterIntakeData((prevData) => [
+          ...prevData,
+          {
+            date: dateKey,
+            amount: Number(waterIntake),
+          },
+        ]);
+        const newChartData = generateChartData([
+          ...waterIntakeData,
+          { date: dateKey, amount: Number(waterIntake) },
+        ]);
+        setChartData(newChartData);
+      });
+      setWaterIntake("");
+    }
+  };
 
   return (
     <div className="container mx-auto p-5">
@@ -146,7 +145,11 @@ const WaterIntakeTracker = () => {
           <label className="mb-2 block text-black dark:text-white">View:</label>
           <select
             value={view}
-            onChange={(e) => setView(e.target.value)}
+            onChange={(e) => {
+              setView(e.target.value);
+              const newChartData = generateChartData(waterIntakeData);
+              setChartData(newChartData);
+            }}
             className="rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black dark:border-form-strokedark dark:bg-form-input dark:text-white"
           >
             <option value="weekly">Weekly</option>
@@ -155,7 +158,6 @@ const WaterIntakeTracker = () => {
         </div>
       </div>
 
-      {/* Chart Section */}
       <div className="mt-8 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-7">
         <h3 className="font-medium text-black dark:text-white mb-6">
           Water Intake - Last {view === "weekly" ? "30 Days" : "Year"}
@@ -186,7 +188,10 @@ const WaterIntakeTracker = () => {
               enabled: false,
             },
             xaxis: {
-              categories: chartData.categories,
+              categories:
+                chartData.categories.length > 0
+                  ? chartData.categories
+                  : ["No Data"],
             },
             legend: {
               position: "top",
@@ -204,7 +209,11 @@ const WaterIntakeTracker = () => {
               },
             },
           }}
-          series={chartData.series}
+          series={
+            chartData.series.length > 0
+              ? chartData.series
+              : [{ name: "Water Intake (L)", data: [0] }]
+          }
           type="bar"
           height={335}
         />

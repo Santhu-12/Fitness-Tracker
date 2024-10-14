@@ -21,7 +21,7 @@ function SideNavUser() {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <NavLink
-                  to="/bmi-calculator"
+                  to="/home/bmi-calculator"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 
                     bg-graydark dark:bg-meta-4
                   `}
@@ -33,7 +33,7 @@ function SideNavUser() {
 
               <li>
                 <NavLink
-                  to="/water-intake"
+                  to="/home/water-intake"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 
                     bg-graydark dark:bg-meta-4
                   `}
@@ -88,7 +88,7 @@ function SideNavUser() {
               </li>
               <li>
                 <NavLink
-                  to="/goals"
+                  to="/home/goals"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4
                   }`}
                 >
@@ -174,7 +174,7 @@ function SideNavUser() {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <NavLink
-                  to="/weather"
+                  to="/home/weather"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4`}
                 >
                   <ion-icon
@@ -188,7 +188,7 @@ function SideNavUser() {
 
               <li>
                 <NavLink
-                  to="/feedback"
+                  to="/home/feedback"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4`}
                 >
                   <ion-icon name="chatbubble-outline"></ion-icon>
