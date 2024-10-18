@@ -19,7 +19,7 @@ const WaterIntakeTracker = () => {
     const filteredData = data.filter((entry) => {
       const entryDate = new Date(entry.date);
       return view === "weekly"
-        ? (today - entryDate) / (1000 * 60 * 60 * 24) <= 30 // Last 30 days for weekly view
+        ? (today - entryDate) / (1000 * 60 * 60 * 24) <= 7 // Last 7 days for weekly view
         : entryDate.getFullYear() === today.getFullYear(); // Current year for monthly view
     });
 
@@ -72,6 +72,11 @@ const WaterIntakeTracker = () => {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    const newChartData = generateChartData(waterIntakeData);
+    setChartData(newChartData);
+  }, [view, waterIntakeData]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (waterIntake && selectedDate && currentUser) {
@@ -81,17 +86,12 @@ const WaterIntakeTracker = () => {
         `waterIntake/${currentUser.uid}/${dateKey}`
       );
       set(userWaterIntakeRef, Number(waterIntake)).then(() => {
-        setWaterIntakeData((prevData) => [
-          ...prevData,
-          {
-            date: dateKey,
-            amount: Number(waterIntake),
-          },
-        ]);
-        const newChartData = generateChartData([
+        const updatedData = [
           ...waterIntakeData,
           { date: dateKey, amount: Number(waterIntake) },
-        ]);
+        ];
+        setWaterIntakeData(updatedData);
+        const newChartData = generateChartData(updatedData);
         setChartData(newChartData);
       });
       setWaterIntake("");
@@ -145,11 +145,7 @@ const WaterIntakeTracker = () => {
           <label className="mb-2 block text-black dark:text-white">View:</label>
           <select
             value={view}
-            onChange={(e) => {
-              setView(e.target.value);
-              const newChartData = generateChartData(waterIntakeData);
-              setChartData(newChartData);
-            }}
+            onChange={(e) => setView(e.target.value)}
             className="rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black dark:border-form-strokedark dark:bg-form-input dark:text-white"
           >
             <option value="weekly">Weekly</option>
@@ -160,7 +156,7 @@ const WaterIntakeTracker = () => {
 
       <div className="mt-8 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-7">
         <h3 className="font-medium text-black dark:text-white mb-6">
-          Water Intake - Last {view === "weekly" ? "30 Days" : "Year"}
+          Water Intake - Last {view === "weekly" ? "7 Days" : "Year"}
         </h3>
         <ReactApexChart
           options={{

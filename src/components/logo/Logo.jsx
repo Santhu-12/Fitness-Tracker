@@ -22,9 +22,7 @@ const Logo = () => {
           fill="none"
         />
       </svg>
-      <h1 className="text-2xl font-semibold text-gray-800 tracking-tight">
-        Fitness Tracker
-      </h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Fitness Tracker</h1>
     </div>
   );
 };

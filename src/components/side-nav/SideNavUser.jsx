@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import Logo from "../logo/Logo";
 
 function SideNavUser() {
   return (
@@ -7,7 +8,7 @@ function SideNavUser() {
     >
       <div className="flex items-center justify-between gap-2 px-6 pt-6 lg:py-6.5">
         <h2 className="mb-4 ml-4 text-lg font-semibold text-bodydark2">
-          Fitness Tracker
+          <Logo />
         </h2>
       </div>
 
