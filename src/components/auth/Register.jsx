@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
@@ -23,6 +24,8 @@ export default function Register() {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -33,7 +36,6 @@ export default function Register() {
     setError(null);
     setSuccessMessage(null);
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -47,7 +49,6 @@ export default function Register() {
 
       const user = userCredential.user;
 
-      // Store additional user details in the Realtime Database
       const userId = user.uid;
       await set(ref(database, `users/${userId}`), {
         name: formData.name,
@@ -60,17 +61,11 @@ export default function Register() {
 
       setSuccessMessage("User registered successfully!");
 
-      // Optionally, reset form data
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        age: "",
-        gender: "",
-        weight: "",
-        height: "",
-      });
+      alert("Account created successfully!");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (err) {
       setError(err.message);
     }
@@ -266,9 +261,20 @@ export default function Register() {
             <div>
               <button
                 type="submit"
-                className="block w-full rounded-md bg-indigo-600 px-3 py-1.5 text-center text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                className="w-full flex justify-center rounded-md bg-indigo-600 py-2 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Register
+              </button>
+            </div>
+
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600">Already have an account?</p>
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              >
+                Back to Sign In
               </button>
             </div>
           </form>
