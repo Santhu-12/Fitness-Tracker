@@ -137,7 +137,7 @@ const Goals = () => {
                     setGoalValue(goal.goalValue);
                     setStatus(goal.status);
                   }}
-                  className="inline-flex items-center justify-center rounded-full border border-yellow-500 py-2 px-4 text-center font-medium text-yellow-500 hover:bg-yellow-500 hover:text-white"
+                  className="inline-flex items-center justify-center rounded-full border border-yellow-900 py-2 px-4 text-center font-medium text-yellow-900 hover:bg-yellow-900 hover:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +157,7 @@ const Goals = () => {
                 </button>
                 <button
                   onClick={() => removeGoal(goal.goalId)}
-                  className="inline-flex items-center justify-center rounded-full border border-red-500 py-2 px-4 text-center font-medium text-red-500 hover:bg-red-500 hover:text-white"
+                  className="inline-flex items-center justify-center rounded-full border border-red-800 py-2 px-4 text-center font-medium text-red-800 hover:bg-red-500 hover:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

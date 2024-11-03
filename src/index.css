@@ -9,7 +9,7 @@
 
 .text-bodydark2 {
   --tw-text-opacity: 1;
-  color: rgb(138 153 175 / var(--tw-text-opacity)) /* #8a99af */;
+  color: rgb(192 197 206 / var(--tw-text-opacity)) /* #8a99af */;
 }
 
 .bg-black {
@@ -45,7 +45,7 @@
 
 .bg-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(60 80 224 / var(--tw-bg-opacity)) /* #3c50e0 */;
+  background-color: rgb(49 66 196 / var(--tw-bg-opacity)) /* #3c50e0 */;
 }
 
 .text-gray {

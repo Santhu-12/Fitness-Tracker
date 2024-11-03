@@ -46,7 +46,7 @@ function SideNavUser() {
 
               <li>
                 <NavLink
-                  to="/search"
+                  to="/home/workouts"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4`}
                 >
                   <ion-icon name="search-outline"></ion-icon>
@@ -55,7 +55,7 @@ function SideNavUser() {
               </li>
               <li>
                 <NavLink
-                  to="/workout-plan"
+                  to="/home/myworkouts"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4
                   `}
                 >
@@ -128,7 +128,7 @@ function SideNavUser() {
 
               <li>
                 <NavLink
-                  to="/progress-reports"
+                  to="/home/progress-reports"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4
                   }`}
                 >

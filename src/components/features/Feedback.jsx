@@ -6,7 +6,8 @@ const Feedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [feedbackText, setFeedbackText] = useState("");
   const [feedbackId, setFeedbackId] = useState(null);
-  const userId = auth.currentUser ? auth.currentUser.uid : null; // Get current user UID
+  const [rating, setRating] = useState("");
+  const userId = auth.currentUser ? auth.currentUser.uid : null;
 
   useEffect(() => {
     if (userId) {
@@ -23,6 +24,7 @@ const Feedback = () => {
     const newFeedback = {
       feedbackId: Date.now(),
       feedbackText,
+      rating: parseInt(rating),
       dateSubmitted: new Date().toLocaleDateString(),
     };
 
@@ -41,6 +43,7 @@ const Feedback = () => {
     const updatedFeedback = {
       feedbackId: id,
       feedbackText,
+      rating: parseInt(rating),
       dateSubmitted: new Date().toLocaleDateString(),
     };
 
@@ -62,6 +65,7 @@ const Feedback = () => {
   const resetForm = () => {
     setFeedbackId(null);
     setFeedbackText("");
+    setRating("");
   };
 
   return (
@@ -74,6 +78,18 @@ const Feedback = () => {
           onChange={(e) => setFeedbackText(e.target.value)}
           className="border border-gray-300 rounded p-2 w-full mb-2"
         />
+        <select
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+          className="border border-gray-300 rounded p-2 w-full mb-2"
+        >
+          <option value="">Select Rating</option>
+          <option value="5">5 - Excellent</option>
+          <option value="4">4 - Good</option>
+          <option value="3">3 - Average</option>
+          <option value="2">2 - Poor</option>
+          <option value="1">1 - Very Poor</option>
+        </select>
         <button
           onClick={feedbackId ? () => updateFeedback(feedbackId) : addFeedback}
           className="inline-flex items-center justify-center rounded-full border border-primary py-2 px-4 text-center font-medium text-primary hover:bg-opacity-90"
@@ -103,6 +119,7 @@ const Feedback = () => {
               className="p-4 border border-gray-200 rounded-md shadow-sm mb-4"
             >
               <p className="text-gray-600">{feedback.feedbackText}</p>
+              <p className="text-gray-600">Rating: {feedback.rating} / 5</p>
               <p className="text-gray-600">
                 Date Submitted: {feedback.dateSubmitted}
               </p>
@@ -111,8 +128,9 @@ const Feedback = () => {
                   onClick={() => {
                     setFeedbackId(feedback.feedbackId);
                     setFeedbackText(feedback.feedbackText);
+                    setRating(feedback.rating);
                   }}
-                  className="inline-flex items-center justify-center rounded-full border border-yellow-500 py-2 px-4 text-center font-medium text-yellow-500 hover:bg-yellow-500 hover:text-white"
+                  className="inline-flex items-center justify-center rounded-full border border-yellow-900 py-2 px-4 text-center font-medium text-yellow-900 hover:bg-yellow-900 hover:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +150,7 @@ const Feedback = () => {
                 </button>
                 <button
                   onClick={() => removeFeedback(feedback.feedbackId)}
-                  className="inline-flex items-center justify-center rounded-full border border-red-500 py-2 px-4 text-center font-medium text-red-500 hover:bg-red-500 hover:text-white"
+                  className="inline-flex items-center justify-center rounded-full border border-red-800 py-2 px-4 text-center font-medium text-red-800 hover:bg-red-800 hover:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

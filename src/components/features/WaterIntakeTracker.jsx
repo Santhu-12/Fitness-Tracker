@@ -9,6 +9,7 @@ import { useAuth } from "../../contexts/authContext";
 const WaterIntakeTracker = () => {
   const { currentUser } = useAuth();
   const [waterIntake, setWaterIntake] = useState("");
+  const [goal, setGoal] = useState(15);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [waterIntakeData, setWaterIntakeData] = useState([]);
   const [view, setView] = useState("weekly");
@@ -19,8 +20,8 @@ const WaterIntakeTracker = () => {
     const filteredData = data.filter((entry) => {
       const entryDate = new Date(entry.date);
       return view === "weekly"
-        ? (today - entryDate) / (1000 * 60 * 60 * 24) <= 7 // Last 7 days for weekly view
-        : entryDate.getFullYear() === today.getFullYear(); // Current year for monthly view
+        ? (today - entryDate) / (1000 * 60 * 60 * 24) <= 7
+        : entryDate.getFullYear() === today.getFullYear();
     });
 
     const groupedData = {};
@@ -57,10 +58,13 @@ const WaterIntakeTracker = () => {
       onValue(userWaterIntakeRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          const formattedData = Object.entries(data).map(([date, amount]) => ({
-            date,
-            amount,
-          }));
+          const formattedData = Object.entries(data).map(
+            ([date, { amount, goal }]) => ({
+              date,
+              amount,
+              goal,
+            })
+          );
           setWaterIntakeData(formattedData);
           const newChartData = generateChartData(formattedData);
           setChartData(newChartData);
@@ -85,15 +89,24 @@ const WaterIntakeTracker = () => {
         database,
         `waterIntake/${currentUser.uid}/${dateKey}`
       );
-      set(userWaterIntakeRef, Number(waterIntake)).then(() => {
-        const updatedData = [
-          ...waterIntakeData,
-          { date: dateKey, amount: Number(waterIntake) },
-        ];
+
+      set(userWaterIntakeRef, {
+        amount: Number(waterIntake),
+        goal: Number(goal),
+      }).then(() => {
+        const updatedData = waterIntakeData.filter(
+          (entry) => entry.date !== dateKey
+        );
+        updatedData.push({
+          date: dateKey,
+          amount: Number(waterIntake),
+          goal: Number(goal),
+        });
         setWaterIntakeData(updatedData);
         const newChartData = generateChartData(updatedData);
         setChartData(newChartData);
       });
+
       setWaterIntake("");
     }
   };
@@ -118,6 +131,19 @@ const WaterIntakeTracker = () => {
               placeholder="Enter water intake in liters"
               className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white"
               required
+            />
+          </div>
+
+          <div>
+            <label className="mb-3 block text-black dark:text-white">
+              Goal (L)
+            </label>
+            <input
+              type="number"
+              step="0.1"
+              value={goal}
+              onChange={(e) => setGoal(e.target.value)}
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white"
             />
           </div>
 

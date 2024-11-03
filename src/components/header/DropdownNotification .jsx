@@ -1,9 +1,93 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ref, onValue } from "firebase/database";
+import { database } from "../../firebase/firebase";
+import { auth } from "../../firebase/firebase";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+
+  const userId = auth.currentUser ? auth.currentUser.uid : null;
+
+  useEffect(() => {
+    if (userId) {
+      const goalsRef = ref(database, `users/${userId}/goals`);
+      const waterIntakeRef = ref(database, `waterIntake/${userId}`);
+
+      onValue(goalsRef, (snapshot) => {
+        const goalsData = snapshot.val();
+        const goalsArray = goalsData ? Object.values(goalsData) : [];
+        generateNotifications(goalsArray);
+      });
+
+      onValue(waterIntakeRef, (snapshot) => {
+        const waterData = snapshot.val();
+        generateNotifications([], waterData);
+      });
+    }
+  }, [userId]);
+
+  const generateNotifications = (goalsArray = [], waterData = {}) => {
+    const newNotifications = [];
+
+    if (goalsArray.length > 0) {
+      goalsArray.forEach((goal) => {
+        if (goal.status === "Pending") {
+          newNotifications.push(
+            <>
+              🕒 Don't forget to work on your goal:{" "}
+              <strong>{goal.goalType}</strong> ({goal.goalValue})
+            </>
+          );
+        } else if (goal.status === "In Progress") {
+          newNotifications.push(
+            <>
+              💧 Keep going! You're making progress on your goal:{" "}
+              <strong>{goal.goalType}</strong>
+            </>
+          );
+        } else if (goal.status === "Achieved") {
+          newNotifications.push(
+            <>
+              🏆 Congratulations! You've achieved your goal:{" "}
+              <strong>{goal.goalType}</strong>
+            </>
+          );
+        }
+      });
+    }
+
+    const currentWaterIntake = Object.values(waterData)?.slice(-1)[0];
+    const lastGoal =
+      goalsArray.length > 0 ? goalsArray[goalsArray.length - 1].goal : 15;
+
+    if (currentWaterIntake) {
+      const { amount, goal } = currentWaterIntake;
+      if (amount < goal) {
+        newNotifications.push(
+          <>
+            💧 You have consumed <strong>{amount}L</strong> of water. Keep
+            drinking to reach your goal of <strong>{goal}L</strong>!
+          </>
+        );
+      } else {
+        newNotifications.push(
+          <>
+            🏆 Great job! You've reached your water intake goal of{" "}
+            <strong>{goal}L</strong>.
+          </>
+        );
+      }
+    } else {
+      newNotifications.push(
+        <>💧 You have not logged any water intake yet. Start tracking today!</>
+      );
+    }
+
+    setNotifications(newNotifications);
+  };
 
   return (
     <div className="relative">
@@ -38,80 +122,20 @@ const DropdownNotification = () => {
             />
           </svg>
         </Link>
-
-        {dropdownOpen && (
-          <div
-            className={`absolute -right-27 mt-3 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80`}
-          >
-            <div className="px-5 py-3">
-              <h5 className="text-sm font-medium text-bodydark2">
-                Notifications
-              </h5>
-            </div>
-
-            <ul className="flex h-auto flex-col overflow-y-auto">
-              <li>
-                <Link
-                  className="flex flex-col gap-2 border-t border-stroke px-4 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  to="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black dark:text-white">
-                      💧 Water Intake Goal Achieved!
-                    </span>{" "}
-                    You have successfully reached your water intake goal of 15
-                    liters today. 🎉
-                  </p>
-                  <p className="text-xs">12 May, 2025</p>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex flex-col gap-2 border-t border-stroke px-4 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  to="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black dark:text-white">
-                      📉 Weight Management Update
-                    </span>{" "}
-                    Your weight has decreased by 1 kg this week. Keep it up! 💪
-                  </p>
-                  <p className="text-xs">24 Feb, 2025</p>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex flex-col gap-2 border-t border-stroke px-4 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  to="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black dark:text-white">
-                      🎯 New Goal Set
-                    </span>{" "}
-                    You have set a new goal to run 5 km by the end of the month.
-                    🏃‍♂
-                  </p>
-                  <p className="text-xs">04 Jan, 2025</p>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex flex-col gap-2 border-t border-stroke px-4 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  to="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black dark:text-white">
-                      🔔 Reminder: Hydration is Key!
-                    </span>{" "}
-                    Don’t forget to drink water regularly throughout the day. 💧
-                  </p>
-                  <p className="text-xs">01 Dec, 2024</p>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        )}
       </li>
+      {dropdownOpen && (
+        <ul className="absolute right-0 mt-2 w-64 rounded-md bg-white shadow-lg z-10">
+          {notifications.length > 0 ? (
+            notifications.map((notification, index) => (
+              <li key={index} className="px-4 py-2 border-b border-gray-200">
+                {notification}
+              </li>
+            ))
+          ) : (
+            <li className="px-4 py-2">No notifications at the moment.</li>
+          )}
+        </ul>
+      )}
     </div>
   );
 };

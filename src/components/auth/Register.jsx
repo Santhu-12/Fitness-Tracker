@@ -48,8 +48,8 @@ export default function Register() {
       );
 
       const user = userCredential.user;
-
       const userId = user.uid;
+
       await set(ref(database, `users/${userId}`), {
         name: formData.name,
         email: formData.email,
@@ -57,6 +57,7 @@ export default function Register() {
         gender: formData.gender,
         weight: formData.weight,
         height: formData.height,
+        role: "user",
       });
 
       setSuccessMessage("User registered successfully!");
@@ -261,18 +262,18 @@ export default function Register() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center rounded-md bg-indigo-600 py-2 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="w-full flex justify-center rounded-md bg-indigo-800 py-2 px-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-800"
               >
                 Register
               </button>
             </div>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">Already have an account?</p>
+              <p className="text-sm text-gray-800">Already have an account?</p>
               <button
                 type="button"
                 onClick={() => navigate("/login")}
-                className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                className="text-sm font-semibold leading-6 text-indigo-800 hover:text-indigo-600"
               >
                 Back to Sign In
               </button>

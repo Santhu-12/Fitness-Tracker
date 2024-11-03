@@ -176,7 +176,7 @@ const EditProfile = () => {
         <div className="mt-6">
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 focus:outline-none"
+            className="w-full bg-indigo-800 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 focus:outline-none"
           >
             Update Profile
           </button>
