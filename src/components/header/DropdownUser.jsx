@@ -37,6 +37,7 @@ const DropdownUser = () => {
     // <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
     <div className="relative">
       <Link
+        aria-label="user-profile"
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-12 "
         to="#"
@@ -51,7 +52,11 @@ const DropdownUser = () => {
           <img src="src\assets\user.avif" alt="User" />
         </span> */}
         <div className="flex items-center gap-2">
-          <ion-icon name="person-circle-outline" size="large"></ion-icon>
+          <ion-icon
+            name="person-circle-outline"
+            size="large"
+            aria-label="user-icon"
+          ></ion-icon>
 
           <svg
             className="hidden fill-current sm:block"
@@ -105,6 +110,7 @@ const DropdownUser = () => {
             </ul>
           )}
           <button
+            aria-label="sign-out button"
             className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             onClick={handleSignOut}
           >

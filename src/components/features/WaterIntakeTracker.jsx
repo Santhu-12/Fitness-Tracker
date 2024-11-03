@@ -120,10 +120,14 @@ const WaterIntakeTracker = () => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div>
-            <label className="mb-3 block text-black dark:text-white">
+            <label
+              className="mb-3 block text-black dark:text-white"
+              for="water-intake"
+            >
               Water Intake (L)
             </label>
             <input
+              id="water-intake"
               type="number"
               step="0.1"
               value={waterIntake}
@@ -135,10 +139,11 @@ const WaterIntakeTracker = () => {
           </div>
 
           <div>
-            <label className="mb-3 block text-black dark:text-white">
+            <label className="mb-3 block text-black dark:text-white" for="goal">
               Goal (L)
             </label>
             <input
+              id="goal"
               type="number"
               step="0.1"
               value={goal}
@@ -148,10 +153,11 @@ const WaterIntakeTracker = () => {
           </div>
 
           <div>
-            <label className="mb-3 block text-black dark:text-white">
+            <label className="mb-3 block text-black dark:text-white" for="date">
               Date
             </label>
             <DatePicker
+              id="date"
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
               className="w-full rounded-lg border-[1.5px] border-primary bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:bg-form-input dark:text-white"
@@ -170,6 +176,7 @@ const WaterIntakeTracker = () => {
         <div className="mt-5">
           <label className="mb-2 block text-black dark:text-white">View:</label>
           <select
+            aria-label="view-graph"
             value={view}
             onChange={(e) => setView(e.target.value)}
             className="rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black dark:border-form-strokedark dark:bg-form-input dark:text-white"

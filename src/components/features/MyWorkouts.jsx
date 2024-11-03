@@ -116,6 +116,7 @@ const MyWorkouts = () => {
     <div className="max-w-6xl mx-auto p-6 bg-white border border-gray-300 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold mb-4">My Workout Plan</h2>
       <input
+        aria-label="search-workouts"
         type="text"
         placeholder="Search by workout name or difficulty level"
         value={searchTerm}

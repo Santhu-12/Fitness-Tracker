@@ -74,6 +74,7 @@ const Goals = () => {
       <h2 className="text-xl font-semibold mb-4">Fitness Goals</h2>
       <div className="mb-6">
         <input
+          aria-label="goal type"
           type="text"
           placeholder="Goal Type"
           value={goalType}
@@ -81,6 +82,7 @@ const Goals = () => {
           className="border border-gray-300 rounded p-2 w-full mb-2"
         />
         <input
+          aria-label="goal value"
           type="text"
           placeholder="Goal Value"
           value={goalValue}
@@ -88,6 +90,7 @@ const Goals = () => {
           className="border border-gray-300 rounded p-2 w-full mb-2"
         />
         <select
+          aria-label="status"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
           className="border border-gray-300 rounded p-2 w-full mb-2"

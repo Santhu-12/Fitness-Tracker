@@ -27,7 +27,10 @@ function SideNavAdmin() {
                     bg-graydark dark:bg-meta-4
                   `}
                 >
-                  <ion-icon name="people-outline"></ion-icon>
+                  <ion-icon
+                    name="people-outline"
+                    aria-label="admins-icon"
+                  ></ion-icon>
                   Manage Admins
                 </NavLink>
               </li>
@@ -39,7 +42,10 @@ function SideNavAdmin() {
                     bg-graydark dark:bg-meta-4
                   `}
                 >
-                  <ion-icon name="barbell-outline"></ion-icon>
+                  <ion-icon
+                    name="barbell-outline"
+                    aria-label="workouts-icon"
+                  ></ion-icon>
                   Manage Workouts
                 </NavLink>
               </li>
@@ -49,7 +55,10 @@ function SideNavAdmin() {
                   to="/admin/manage-feedbacks"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4`}
                 >
-                  <ion-icon name="chatbubble-outline"></ion-icon>
+                  <ion-icon
+                    name="chatbubble-outline"
+                    aria-label="feedback-icon"
+                  ></ion-icon>
                   Manage Feedback
                 </NavLink>
               </li>

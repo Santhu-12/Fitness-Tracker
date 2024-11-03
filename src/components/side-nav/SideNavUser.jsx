@@ -27,20 +27,27 @@ function SideNavUser() {
                     bg-graydark dark:bg-meta-4
                   `}
                 >
-                  <ion-icon name="calculator-outline"></ion-icon>
+                  <ion-icon
+                    name="calculator-outline"
+                    aria-label="bmi-calculator"
+                  ></ion-icon>
                   BMI Calculator
                 </NavLink>
               </li>
 
               <li>
                 <NavLink
+                  aria-label="water-intake"
                   to="/home/water-intake"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 
                     bg-graydark dark:bg-meta-4
                   `}
                 >
-                  <ion-icon name="water-outline"></ion-icon>
-                  Water Intake
+                  <ion-icon
+                    name="water-outline"
+                    aria-label="water-intake"
+                  ></ion-icon>
+                  <span>Water Intake</span>
                 </NavLink>
               </li>
 
@@ -49,7 +56,10 @@ function SideNavUser() {
                   to="/home/workouts"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4`}
                 >
-                  <ion-icon name="search-outline"></ion-icon>
+                  <ion-icon
+                    name="search-outline"
+                    aria-label="search-workout"
+                  ></ion-icon>
                   Search Workouts
                 </NavLink>
               </li>
@@ -182,6 +192,7 @@ function SideNavUser() {
                     name="cloud-outline"
                     width="20"
                     height="20"
+                    aria-label="weather"
                   ></ion-icon>
                   Weather
                 </NavLink>
@@ -192,7 +203,10 @@ function SideNavUser() {
                   to="/home/feedback"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4`}
                 >
-                  <ion-icon name="chatbubble-outline"></ion-icon>
+                  <ion-icon
+                    name="chatbubble-outline"
+                    aria-label="feedback"
+                  ></ion-icon>
                   Feedback
                 </NavLink>
               </li>

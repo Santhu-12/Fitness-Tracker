@@ -130,6 +130,7 @@ function AdminManagement() {
       <div className="mt-6">
         <h3 className="font-medium mb-2">Add New Admin</h3>
         <input
+          aria-label="name"
           type="text"
           name="name"
           placeholder="Name"
@@ -138,6 +139,7 @@ function AdminManagement() {
           className="border px-3 py-2 mr-2"
         />
         <input
+          aria-label="email"
           type="email"
           name="email"
           placeholder="Email"

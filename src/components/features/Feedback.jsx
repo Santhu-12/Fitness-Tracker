@@ -73,12 +73,14 @@ const Feedback = () => {
       <h2 className="text-xl font-semibold mb-4">User Feedback</h2>
       <div className="mb-6">
         <textarea
+          aria-label="feedback"
           placeholder="Your Feedback"
           value={feedbackText}
           onChange={(e) => setFeedbackText(e.target.value)}
           className="border border-gray-300 rounded p-2 w-full mb-2"
         />
         <select
+          aria-label="rating"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
           className="border border-gray-300 rounded p-2 w-full mb-2"

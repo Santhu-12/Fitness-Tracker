@@ -79,6 +79,7 @@ const EditProfile = () => {
               Email
             </label>
             <input
+              aria-label="email"
               type="email"
               name="email"
               value={formData.email}
@@ -93,6 +94,7 @@ const EditProfile = () => {
           <div>
             <label className="block text-gray-700 font-medium mb-1">Name</label>
             <input
+              aria-label="name"
               type="text"
               name="name"
               value={formData.name}
@@ -105,6 +107,7 @@ const EditProfile = () => {
           <div>
             <label className="block text-gray-700 font-medium mb-1">Age</label>
             <input
+              aria-label="age"
               type="number"
               name="age"
               value={formData.age}
@@ -118,6 +121,7 @@ const EditProfile = () => {
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-1">Gender</label>
           <select
+            aria-label="gender"
             name="gender"
             value={formData.gender}
             onChange={handleChange}
@@ -133,6 +137,7 @@ const EditProfile = () => {
           <div>
             <label className="block text-gray-700 font-medium mb-1">Role</label>
             <select
+              aria-label="role"
               name="role"
               value={formData.role}
               onChange={handleChange}
@@ -149,6 +154,7 @@ const EditProfile = () => {
               Weight (kg)
             </label>
             <input
+              aria-label="weight"
               type="number"
               name="weight"
               value={formData.weight}
@@ -163,6 +169,7 @@ const EditProfile = () => {
               Height (cm)
             </label>
             <input
+              aria-label="height"
               type="number"
               name="height"
               value={formData.height}

@@ -90,6 +90,7 @@ const WorkoutManagement = () => {
 
       <h3 className="text-lg font-semibold mb-2">Add New Workout</h3>
       <input
+        aria-label="workout name"
         type="text"
         name="workoutName"
         value={newWorkout.workoutName}
@@ -98,6 +99,7 @@ const WorkoutManagement = () => {
         className="w-full p-2 mb-2 border border-gray-300 rounded-md"
       />
       <select
+        aria-label="difficulty level"
         name="difficultyLevel"
         value={newWorkout.difficultyLevel}
         onChange={handleNewWorkoutChange}
@@ -108,6 +110,7 @@ const WorkoutManagement = () => {
         <option value="Hard">Hard</option>
       </select>
       <input
+        aria-label="duration"
         type="number"
         name="exerciseDuration"
         value={newWorkout.exerciseDuration}
@@ -117,6 +120,7 @@ const WorkoutManagement = () => {
         min="1"
       />
       <input
+        aria-label="image url"
         type="text"
         name="imageUrl"
         value={newWorkout.imageUrl}

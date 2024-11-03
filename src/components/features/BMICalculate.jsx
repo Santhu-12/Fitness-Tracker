@@ -44,10 +44,14 @@ const BMICalculate = () => {
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col gap-5.5 p-7">
               <div className="mb-5">
-                <label className="mb-3 block text-black dark:text-white">
+                <label
+                  className="mb-3 block text-black dark:text-white"
+                  for="weight"
+                >
                   Weight (kg)
                 </label>
                 <input
+                  id="weight"
                   type="number"
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
@@ -58,10 +62,14 @@ const BMICalculate = () => {
               </div>
 
               <div className="mb-5">
-                <label className="mb-3 block text-black dark:text-white">
+                <label
+                  className="mb-3 block text-black dark:text-white"
+                  for="height"
+                >
                   Height (cm)
                 </label>
                 <input
+                  id="height"
                   type="number"
                   value={height}
                   onChange={(e) => setHeight(e.target.value)}
