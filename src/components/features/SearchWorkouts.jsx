@@ -76,8 +76,12 @@ const SearchWorkouts = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white border border-gray-300 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Search Workouts</h2>
+      <h1 className="text-xl font-semibold mb-4">Search Workouts</h1>
+      <label htmlFor="search" className="sr-only">
+        Search Workouts
+      </label>
       <input
+        id="search"
         aria-label="search"
         type="text"
         value={searchTerm}
@@ -103,7 +107,7 @@ const SearchWorkouts = () => {
               alt={workout.workoutName}
               className="h-32 w-full object-cover mb-4 rounded-md"
             />
-            <h3 className="text-lg font-semibold">{workout.workoutName}</h3>
+            <h2 className="text-lg font-semibold">{workout.workoutName}</h2>
             <p className="text-gray-600">
               Difficulty Level: {workout.difficultyLevel}
             </p>
